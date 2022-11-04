@@ -5,7 +5,6 @@ import 'package:notifier/src/application/fetch_products.dart';
 import '../models/product_model.dart';
 import 'edit_products_table.dart';
 
-
 final productNameProvider = StateProvider<String>((ref) => "");
 final dateProvider = StateProvider<String>((ref) => "");
 
@@ -16,8 +15,8 @@ class EditPage extends ConsumerWidget {
 
   int getId(List list) {
     int id = 1;
-    while ((list.singleWhere((e) => e.id == id,
-        orElse: () => false)) != false) {
+    while (
+        (list.singleWhere((e) => e.id == id, orElse: () => false)) != false) {
       id++;
     }
     return id;
@@ -28,25 +27,23 @@ class EditPage extends ConsumerWidget {
     List edit = products;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(
-            child: Text('Edit'),
-          ),
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(
-                  Icons.check,
-                ),
-                onPressed: () {
-                  ref.read(fetchProductsProvider.notifier).confirmEdit(edit);
-                  ref.read(fetchProductsProvider).then((data){print(data);});
-                }
-            ),
-          ],
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Edit'),
         ),
-        body: Center(
-          child: getEditTable(ref),
-        ),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.check,
+              ),
+              onPressed: () {
+                ref.read(fetchProductsProvider.notifier).confirmEdit(edit);
+              }),
+        ],
+      ),
+      body: Center(
+        child: getEditTable(ref),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add'),
         icon: const Icon(
@@ -57,10 +54,8 @@ class EditPage extends ConsumerWidget {
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Add new product'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextFormField(
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              TextFormField(
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Enter product name',
@@ -68,18 +63,17 @@ class EditPage extends ConsumerWidget {
                 onChanged: (text) {
                   ref.read(productNameProvider.notifier).state = text;
                 },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: 'Enter expiration date',
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter expiration date',
-                  ),
-                  onChanged: (text) {
-                    ref.read(dateProvider.notifier).state = text;
-                  },
-                ),
-              ]
-            ),
+                onChanged: (text) {
+                  ref.read(dateProvider.notifier).state = text;
+                },
+              ),
+            ]),
             actions: <Widget>[
               TextButton(
                 onPressed: () => {
@@ -95,7 +89,9 @@ class EditPage extends ConsumerWidget {
                   Navigator.pop(context),
 
                   edit.add(Product(
-                      getId(edit), ref.watch(productNameProvider.notifier).state, ref.watch(dateProvider.notifier).state)),
+                      getId(edit),
+                      ref.watch(productNameProvider.notifier).state,
+                      ref.watch(dateProvider.notifier).state)),
                   // build(context, ref),
                 },
                 child: const Text('Add'),

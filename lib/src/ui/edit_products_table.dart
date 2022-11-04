@@ -3,22 +3,24 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../application/fetch_products.dart';
 
-
 class ProductDataSource extends DataGridSource {
   ProductDataSource(this.products) {
-    _products = products.map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<int>(columnName: 'id', value: e.id),
-      DataGridCell<String>(columnName: 'name', value: e.name),
-      DataGridCell<String>(columnName: 'date', value: e.date),
-      const DataGridCell<Icon>(columnName: 'delete', value: Icon(Icons.delete)),
-    ])).toList();
+    _products = products
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<String>(columnName: 'name', value: e.name),
+              DataGridCell<String>(columnName: 'date', value: e.date),
+              const DataGridCell<Icon>(
+                  columnName: 'delete', value: Icon(Icons.delete)),
+            ]))
+        .toList();
   }
 
   List products;
   List<DataGridRow> _products = [];
 
   @override
-  List<DataGridRow> get rows =>  _products;
+  List<DataGridRow> get rows => _products;
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
@@ -28,16 +30,17 @@ class ProductDataSource extends DataGridSource {
           alignment: dataGridCell.columnName == 'name'
               ? Alignment.centerLeft
               : dataGridCell.columnName == 'delete'
-              ? Alignment.center
-              : Alignment.centerRight,
+                  ? Alignment.center
+                  : Alignment.centerRight,
           padding: const EdgeInsets.all(16.0),
           child: (dataGridCell.columnName == 'delete')
               ? IconButton(
-            icon: dataGridCell.value,
-            onPressed: () {
-              products.removeWhere((element) => element.id == row.getCells()[0].value);
-            },
-          )
+                  icon: dataGridCell.value,
+                  onPressed: () {
+                    products.removeWhere(
+                        (element) => element.id == row.getCells()[0].value);
+                  },
+                )
               : Text(dataGridCell.value.toString()),
         );
       }).toList(),
@@ -52,10 +55,10 @@ class ProductDataSource extends DataGridSource {
   void onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
       GridColumn column) {
     final dynamic oldValue = dataGridRow
-        .getCells()
-        .firstWhere((DataGridCell dataGridCell) =>
-    dataGridCell.columnName == column.columnName)
-        .value ??
+            .getCells()
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value ??
         '';
 
     final int dataRowIndex = rows.indexOf(dataGridRow);
@@ -82,13 +85,12 @@ class ProductDataSource extends DataGridSource {
   @override
   Widget? buildEditWidget(DataGridRow dataGridRow,
       RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
-    // Text going to display on editable widget
     final String displayText = dataGridRow
-        .getCells()
-        .firstWhere((DataGridCell dataGridCell) =>
-    dataGridCell.columnName == column.columnName)
-        .value
-        ?.toString() ??
+            .getCells()
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value
+            ?.toString() ??
         '';
 
     newCellValue = null;
@@ -97,11 +99,9 @@ class ProductDataSource extends DataGridSource {
 
     return Container(
       padding: const EdgeInsets.all(8.0),
-      // alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
       child: TextField(
         autofocus: true,
         controller: editingController..text = displayText,
-        // textAlign: isNumericType ? TextAlign.right : TextAlign.left,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
         ),
@@ -125,20 +125,13 @@ class ProductDataSource extends DataGridSource {
   }
 }
 
-FutureBuilder getEditTable(ref){
-  // late ProductDataSource productDataSource;
-  // List products = [];
+FutureBuilder getEditTable(ref) {
   final edit = ref.watch(fetchProductsProvider);
-  // edit.then((data) {
-  //   products = data;
-  // });
-  // productDataSource = ProductDataSource(products);
 
   return FutureBuilder<List<dynamic>>(
       future: edit,
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.hasData) {
-
           late ProductDataSource productDataSource;
           final data = snapshot.data as List;
           productDataSource = ProductDataSource(data);
@@ -149,7 +142,7 @@ FutureBuilder getEditTable(ref){
               allowEditing: true,
               selectionMode: SelectionMode.single,
               navigationMode: GridNavigationMode.cell,
-              columns: <GridColumn> [
+              columns: <GridColumn>[
                 GridColumn(
                     columnName: 'id',
                     allowEditing: false,
@@ -183,6 +176,5 @@ FutureBuilder getEditTable(ref){
           );
         }
         return const CircularProgressIndicator();
-      }
-  );
+      });
 }

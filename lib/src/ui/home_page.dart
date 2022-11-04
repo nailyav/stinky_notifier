@@ -12,27 +12,24 @@ import 'edit_page.dart';
 Future<String> getTime() async {
   String time;
 
-  try{
-    final response = await http.get(Uri.parse("http://worldtimeapi.org/api/timezone/Europe/Moscow"));
-    Map<String,dynamic> data = jsonDecode(response.body);
+  try {
+    final response = await http
+        .get(Uri.parse("http://worldtimeapi.org/api/timezone/Europe/Moscow"));
+    Map<String, dynamic> data = jsonDecode(response.body);
 
     String datetime = data['datetime'];
-    String offset = data['utc_offset'].substring(1,3);
+    String offset = data['utc_offset'].substring(1, 3);
 
     DateTime now = DateTime.parse(datetime);
     now = now.add(Duration(hours: int.parse(offset)));
 
     time = DateFormat.jm().format(now);
     return time;
-
-  }
-  catch(e){
+  } catch (e) {
     time = 'could not get time data';
     return time;
   }
-
 }
-
 
 class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
@@ -50,35 +47,31 @@ class MyHomePage extends ConsumerWidget {
                 return Text(snapshot.data.toString());
               }
               return const CircularProgressIndicator();
-            }
-        ),
+            }),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(
-              Icons.settings,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: ((context) => const SettingsPage()),
-                ),
-              );
-            }
-          ),
+              icon: const Icon(
+                Icons.settings,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: ((context) => const SettingsPage()),
+                  ),
+                );
+              }),
         ],
       ),
       body: Center(
-        child:
-          FutureBuilder<List<dynamic>>(
-              future: products,
-              builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data as List;
-                  return getTable(data, ref);
-                }
-                return const CircularProgressIndicator();
+        child: FutureBuilder<List<dynamic>>(
+            future: products,
+            builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+              if (snapshot.hasData) {
+                final data = snapshot.data as List;
+                return getTable(data, ref);
               }
-          ),
+              return const CircularProgressIndicator();
+            }),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Edit'),

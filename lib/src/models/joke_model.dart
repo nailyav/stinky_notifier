@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 @JsonSerializable()
 class Joke {
   final String iconUrl;
@@ -18,12 +17,8 @@ class Joke {
         url = json['url'],
         value = json['value'];
 
-  Map<String, dynamic> toJson() => {
-    'icon_url' : iconUrl,
-    'id' : id,
-    'url' : url,
-    'value' : value
-  };
+  Map<String, dynamic> toJson() =>
+      {'icon_url': iconUrl, 'id': id, 'url': url, 'value': value};
 
 // factory Joke.fromJson(Map<String, dynamic> json) => _$Joke(json);
 // Map<String, dynamic> toJson() => _$Joke(this);

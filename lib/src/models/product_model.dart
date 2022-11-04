@@ -4,10 +4,10 @@ class Product {
   String date;
 
   Product(
-      this.id,
-      this.name,
-      this.date,
-      );
+    this.id,
+    this.name,
+    this.date,
+  );
 
   Product.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -15,8 +15,8 @@ class Product {
         date = json['date'];
 
   Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
-    'id': id,
-    'name': name,
-    'date': date,
-  };
+        'id': id,
+        'name': name,
+        'date': date,
+      };
 }
