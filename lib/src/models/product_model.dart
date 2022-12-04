@@ -14,7 +14,7 @@ class Product {
         name = json['name'],
         date = json['date'];
 
-  Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'name': name,
         'date': date,

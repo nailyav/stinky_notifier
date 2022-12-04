@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 import '../application/fetch_products.dart';
 
@@ -29,14 +30,14 @@ class ProductDataSource extends DataGridSource {
               ? Alignment.centerLeft
               : Alignment.centerRight,
           padding: const EdgeInsets.all(16.0),
-          child: Text(dataGridCell.value.toString()),
+          child: Text(dataGridCell.value.toString(), softWrap: true,),
         );
       }).toList(),
     );
   }
 }
 
-Expanded getTable(List products, ref) {
+SfDataGridTheme getTable(List products, context, ref) {
   late ProductDataSource productDataSource;
   final edit = ref.watch(fetchProductsProvider);
   edit.then((data) {
@@ -44,34 +45,52 @@ Expanded getTable(List products, ref) {
   });
   productDataSource = ProductDataSource(products);
 
-  return Expanded(
-    child: SfDataGrid(
-      source: productDataSource,
-      allowEditing: true,
-      selectionMode: SelectionMode.single,
-      navigationMode: GridNavigationMode.cell,
-      columns: <GridColumn>[
-        GridColumn(
-            columnName: 'id',
-            allowEditing: false,
-            label: Container(
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.centerRight,
-                child: const Text('ID'))),
-        GridColumn(
-            columnName: 'name',
-            label: Container(
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.centerLeft,
-                child: const Text('Name'))),
-        GridColumn(
-            columnName: 'date',
-            width: 200,
-            label: Container(
-                padding: const EdgeInsets.all(16.0),
-                alignment: Alignment.centerRight,
-                child: const Text('Date'))),
-      ],
-    ),
+  return SfDataGridTheme(
+        data: SfDataGridThemeData(
+            headerColor: Theme.of(context).colorScheme.onSecondary,
+        ),
+        child: SfDataGrid(
+          // TODO change row text color to   style: Theme.of(context).textTheme.button
+          source: productDataSource,
+          onQueryRowHeight: (details) {
+            return details.getIntrinsicRowHeight(details.rowIndex);
+          },
+          columnWidthMode: ColumnWidthMode.fill,
+          navigationMode: GridNavigationMode.cell,
+          columns: <GridColumn>[
+            GridColumn(
+                columnName: 'id',
+                allowEditing: false,
+                label: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'ID',
+                      style: Theme.of(context).textTheme.button,
+                      softWrap: true,))),
+            GridColumn(
+                columnName: 'name',
+                label: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Name',
+                      style: Theme.of(context).textTheme.button,
+                      softWrap: true,))),
+            GridColumn(
+                columnName: 'date',
+                width: 200,
+                label: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'Date',
+                      style: Theme.of(context).textTheme.button,
+                      softWrap: true,
+                    )
+                )
+            ),
+          ],
+        ),
   );
 }

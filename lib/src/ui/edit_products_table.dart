@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../application/fetch_products.dart';
@@ -41,7 +42,7 @@ class ProductDataSource extends DataGridSource {
                         (element) => element.id == row.getCells()[0].value);
                   },
                 )
-              : Text(dataGridCell.value.toString()),
+              : Text(dataGridCell.value.toString(), softWrap: true,),
         );
       }).toList(),
     );
@@ -89,9 +90,7 @@ class ProductDataSource extends DataGridSource {
             .getCells()
             .firstWhere((DataGridCell dataGridCell) =>
                 dataGridCell.columnName == column.columnName)
-            .value
-            ?.toString() ??
-        '';
+            .value?.toString() ?? '';
 
     newCellValue = null;
 
@@ -105,6 +104,7 @@ class ProductDataSource extends DataGridSource {
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
         ),
+        // TODO open date picker when edited
         keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
         onChanged: (String value) {
           if (value.isNotEmpty) {
@@ -136,43 +136,67 @@ FutureBuilder getEditTable(ref) {
           final data = snapshot.data as List;
           productDataSource = ProductDataSource(data);
 
-          return Expanded(
-            child: SfDataGrid(
-              source: productDataSource,
-              allowEditing: true,
-              selectionMode: SelectionMode.single,
-              navigationMode: GridNavigationMode.cell,
-              columns: <GridColumn>[
-                GridColumn(
-                    columnName: 'id',
-                    allowEditing: false,
-                    label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerRight,
-                        child: const Text('ID'))),
-                GridColumn(
-                    columnName: 'name',
-                    label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: const Text('Name'))),
-                GridColumn(
-                    columnName: 'date',
-                    width: 130,
-                    label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerRight,
-                        child: const Text('Date'))),
-                GridColumn(
-                    columnName: 'delete',
-                    allowEditing: false,
-                    width: 80,
-                    label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerRight,
-                        child: const Text('Delete'))),
-              ],
-            ),
+          return SfDataGridTheme(
+                data: SfDataGridThemeData(
+                  headerColor: Theme.of(context).colorScheme.onSecondary,
+                ),
+                child: SfDataGrid(
+                  source: productDataSource,
+                  onQueryRowHeight: (details) {
+                    return details.getIntrinsicRowHeight(details.rowIndex);
+                  },
+                  columnWidthMode: ColumnWidthMode.fill,
+                  allowEditing: true,
+                  selectionMode: SelectionMode.single,
+                  navigationMode: GridNavigationMode.cell,
+                  columns: <GridColumn>[
+                    GridColumn(
+                        columnName: 'id',
+                        allowEditing: false,
+                        label: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                                'ID',
+                                style: Theme.of(context).textTheme.button,
+                                softWrap: true,
+                            ))),
+                    GridColumn(
+                        columnName: 'name',
+                        label: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                'Name',
+                                style: Theme.of(context).textTheme.button,
+                                softWrap: true,
+                            ))),
+                    GridColumn(
+                        columnName: 'date',
+                        width: 130,
+                        label: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                                'Date',
+                                style: Theme.of(context).textTheme.button,
+                                softWrap: true,
+                            ))),
+                    GridColumn(
+                        columnName: 'delete',
+                        allowEditing: false,
+                        width: 80,
+                        label: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                                'Delete',
+                                style: Theme.of(context).textTheme.button,
+                                softWrap: true,
+                            ))),
+                  ],
+                ),
+
           );
         }
         return const CircularProgressIndicator();

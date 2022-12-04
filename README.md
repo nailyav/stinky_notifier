@@ -4,8 +4,6 @@ App to notify user about expiration date
 
 ## Description
 
-The android app shows random jokes retrieved from the API.
-
 Initial look of the home page:
 
 ![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232646.jpg)

@@ -4,12 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../application/fetch_joke.dart';
 import '../models/joke_model.dart';
 
+final themeProvider = StateProvider<bool>((ref) => true);
+
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final joke = ref.watch(callApiProvider);
+    final light = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -41,16 +44,34 @@ class SettingsPage extends ConsumerWidget {
                   }
                   return const CircularProgressIndicator();
                 },
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SwitchListTile(
+                    title: Text('Theme', style: Theme.of(context).textTheme.bodyText2,),
+                    // for light theme
+                    activeColor: const Color(0xfffedbd0),
+                    activeTrackColor: const Color(0xfffeeae6),
+                    // for dark theme
+                    inactiveThumbColor: Colors.grey.shade600,
+                    inactiveTrackColor: Colors.grey.shade400,
+                    value: light,
+                    onChanged: (toggle){
+                      ref.read(themeProvider.notifier).state = toggle;
+                    },
+                    // secondary: const Icon(Icons.wb_sunny),
+                ),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Next'),
-        icon: const Icon(
-          Icons.arrow_forward_rounded,
-          size: 24.0,
+        label: Text('Next', style: Theme.of(context).textTheme.button),
+        icon: Icon(
+            Icons.arrow_forward_rounded,
+            size: 24.0,
+            color: Theme.of(context).colorScheme.onPrimary
         ),
         onPressed: () {
           ref.read(callApiProvider.notifier).call();
