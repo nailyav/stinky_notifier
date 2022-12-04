@@ -78,7 +78,7 @@ class EditPage extends ConsumerWidget {
                       lastDate: DateTime(2033));
                 },
                 validator: (date) => date == null ? 'Invalid date' : null,
-                initialValue: DateTime.parse(ref.read(dateProvider.notifier).state),
+                initialValue: DateTime.now(),
                 onChanged: (date) {
                   ref.read(dateProvider.notifier).state = DateFormat('dd/MM/yyyy').format(date!);
                 },
