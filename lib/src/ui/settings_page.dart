@@ -38,6 +38,7 @@ class SettingsPage extends ConsumerWidget {
                     // secondary: const Icon(Icons.wb_sunny),
                 ),
               ),
+              Image.network('https://http.cat/200'),
             ],
           ),
         ),

@@ -252,7 +252,7 @@ class EditPage extends ConsumerWidget {
 
                 );
               }
-              return const CircularProgressIndicator();
+              return Image.network('https://http.cat/102');
             }),
       ),
       floatingActionButton: FloatingActionButton.extended(

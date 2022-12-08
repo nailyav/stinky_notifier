@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:http/http.dart' as http;
 
 import '../application/edit_products.dart';
 
@@ -205,6 +206,7 @@ FutureBuilder getEditTable(ref) {
 
           );
         }
-        return const CircularProgressIndicator();
+        return Image.network('https://http.cat/102');
+        // return const CircularProgressIndicator();
       });
 }
