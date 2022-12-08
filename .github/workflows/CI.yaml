@@ -19,6 +19,7 @@ jobs:
 
       - name: Lint
         run: flutter analyze
+        continue-on-error: true
 
       - name: Format
         run: flutter format lib !--set-exit-if-changed
