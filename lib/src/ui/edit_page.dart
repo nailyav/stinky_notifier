@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:notifier/src/application/fetch_products.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
+import 'package:notifier/src/application/fetch_products.dart';
+import '../application/edit_products.dart';
 import '../models/product_model.dart';
 import 'edit_products_table.dart';
 
@@ -11,14 +12,11 @@ final productNameProvider = StateProvider<String>((ref) => "");
 final dateProvider = StateProvider<String>((ref) => DateFormat('dd/MM/yyyy').format(DateTime.now()));
 
 class EditPage extends ConsumerWidget {
-  const EditPage(this.products, {super.key});
-
-  final List products;
+  const EditPage({super.key});
 
   int getId(List list) {
     int id = 1;
-    while (
-        (list.singleWhere((e) => e.id == id, orElse: () => false)) != false) {
+    while (list.map((e) => e.id).contains(id)) {
       id++;
     }
     return id;
@@ -26,11 +24,21 @@ class EditPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List edit = products;
+    final edit = ref.watch(editProductsProvider);
+    final products = ref.watch(fetchProductsProvider);
+    edit.then((value) => print("edit: ${value.length}"));
+    products.then((value) => print("edit: ${value.length}"));
     final format = DateFormat("yyyy-MM-dd");
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => {
+            Navigator.of(context).pop(),
+            products.then((value) =>  ref.read(editProductsProvider.notifier).writeProducts(value),)
+          }
+        ),
         title: const Center(
           child: Text('Edit'),
         ),
@@ -40,7 +48,7 @@ class EditPage extends ConsumerWidget {
                 Icons.check,
               ),
               onPressed: () {
-                ref.read(fetchProductsProvider.notifier).confirmEdit(edit);
+                edit.then((data) => ref.read(fetchProductsProvider.notifier).confirmEdit(data));
               }),
         ],
       ),
@@ -92,20 +100,19 @@ class EditPage extends ConsumerWidget {
                 onPressed: () => {
                   Navigator.pop(context),
                 },
-                // TODO make the table recompile when added new product
                 // TODO сбросить editProducts при отмене сохраниения при возвращении на home page
-                // TODO первая добавленная штука сохраняется в main products почему?
                 child: Text('Cancel', style: Theme.of(context).textTheme.button),
               ),
               TextButton(
                 onPressed: () => {
                   Navigator.pop(context),
-
-                  edit.add(Product(
-                      getId(edit),
-                      ref.watch(productNameProvider.notifier).state,
-                      ref.watch(dateProvider.notifier).state)),
-                  // build(context, ref),
+                  edit.then((data) => ref.read(editProductsProvider.notifier).addProductJson(
+                      Product(
+                          getId(data),
+                          ref.watch(productNameProvider.notifier).state,
+                          ref.watch(dateProvider.notifier).state)
+                  )),
+                // ref.read(productNameProvider.notifier).state = '',
                 },
                 child: Text('Add', style: Theme.of(context).textTheme.button),
               ),

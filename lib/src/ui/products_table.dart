@@ -37,60 +37,67 @@ class ProductDataSource extends DataGridSource {
   }
 }
 
-SfDataGridTheme getTable(List products, context, ref) {
-  late ProductDataSource productDataSource;
-  final edit = ref.watch(fetchProductsProvider);
-  edit.then((data) {
-    products = data;
-  });
-  productDataSource = ProductDataSource(products);
 
-  return SfDataGridTheme(
-        data: SfDataGridThemeData(
-            headerColor: Theme.of(context).colorScheme.onSecondary,
-        ),
-        child: SfDataGrid(
-          // TODO change row text color to   style: Theme.of(context).textTheme.button
-          source: productDataSource,
-          onQueryRowHeight: (details) {
-            return details.getIntrinsicRowHeight(details.rowIndex);
-          },
-          columnWidthMode: ColumnWidthMode.fill,
-          navigationMode: GridNavigationMode.cell,
-          columns: <GridColumn>[
-            GridColumn(
-                columnName: 'id',
-                allowEditing: false,
-                label: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'ID',
-                      style: Theme.of(context).textTheme.button,
-                      softWrap: true,))),
-            GridColumn(
-                columnName: 'name',
-                label: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Name',
-                      style: Theme.of(context).textTheme.button,
-                      softWrap: true,))),
-            GridColumn(
-                columnName: 'date',
-                width: 200,
-                label: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'Date',
-                      style: Theme.of(context).textTheme.button,
-                      softWrap: true,
-                    )
-                )
+FutureBuilder getTable(ref) {
+  final products = ref.watch(fetchProductsProvider);
+
+  return FutureBuilder<List<dynamic>>(
+      future: products,
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.hasData) {
+          late ProductDataSource productDataSource;
+          final data = snapshot.data as List;
+          productDataSource = ProductDataSource(data);
+
+          return SfDataGridTheme(
+            data: SfDataGridThemeData(
+              headerColor: Theme.of(context).colorScheme.onSecondary,
             ),
-          ],
-        ),
-  );
+            child: SfDataGrid(
+              // TODO change row text color to  style: Theme.of(context).textTheme.button
+              source: productDataSource,
+              onQueryRowHeight: (details) {
+                return details.getIntrinsicRowHeight(details.rowIndex);
+              },
+              columnWidthMode: ColumnWidthMode.fill,
+              navigationMode: GridNavigationMode.cell,
+              columns: <GridColumn>[
+                GridColumn(
+                    columnName: 'id',
+                    allowEditing: false,
+                    label: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'ID',
+                          style: Theme.of(context).textTheme.button,
+                          softWrap: true,))),
+                GridColumn(
+                    columnName: 'name',
+                    label: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Name',
+                          style: Theme.of(context).textTheme.button,
+                          softWrap: true,))),
+                GridColumn(
+                    columnName: 'date',
+                    width: 200,
+                    label: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Date',
+                          style: Theme.of(context).textTheme.button,
+                          softWrap: true,
+                        )
+                    )
+                ),
+              ],
+            ),
+          );
+        }
+        return const CircularProgressIndicator();
+      });
 }

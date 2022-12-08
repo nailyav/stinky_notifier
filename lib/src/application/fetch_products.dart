@@ -1,38 +1,84 @@
-import 'dart:convert';
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:notifier/src/models/product_model.dart';
 
 class FetchProducts extends Notifier<Future<List>> {
-  List products = [];
 
-  Future<String> getLocalPath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final String path = directory.path;
-    return '$path/products.json';
+  Future<Database> get database async{
+    return openDatabase(
+      join(await getDatabasesPath(), 'products.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, date TEXT)',
+        );
+      },
+      version: 1,
+    );
   }
 
-  Future<File> getLocalFile() async {
-    File file = File(await getLocalPath());
-    return file;
+  Future<void> insertProduct(Product product) async {
+    final db = await database;
+    await db.insert(
+      'products',
+      product.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
-  Future<List> writeListJson(List list) async {
-    final file = await getLocalFile();
-    file.writeAsStringSync(json.encode(list));
+  Future<List<Product>> getProducts() async {
+    final db = await database;
 
-    return list;
+    final List<Map<String, dynamic>> maps = await db.query('products');
+
+    return List.generate(maps.length, (i) {
+      return Product(
+        maps[i]['id'],
+        maps[i]['name'],
+        maps[i]['date'],
+      );
+    });
+  }
+
+  Future<void> updateProduct(Product product) async {
+    final db = await database;
+
+    await db.update(
+      'products',
+      product.toMap(),
+      where: 'id = ?',
+      whereArgs: [product.id],
+    );
+  }
+
+  Future<void> deleteProduct(int id) async {
+    final db = await database;
+
+    await db.delete(
+      'products',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 
   @override
-  Future<List> build() {
-    return writeListJson(products);
+  Future<List> build() async {
+    return getProducts();
   }
 
-  void confirmEdit(List list) {
-    products = list;
-    state = writeListJson(products);
+  Future<void> confirmEdit(List list) async {
+    final products = await getProducts();
+    for (Product product in products){
+      if (!list.contains(product)){
+        deleteProduct(product.id);
+      }
+    }
+    for (Product product in list){
+      insertProduct(product);
+    }
+    state = getProducts();
   }
 }
 

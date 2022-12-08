@@ -19,4 +19,12 @@ class Product {
         'name': name,
         'date': date,
       };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'date': date,
+    };
+  }
 }

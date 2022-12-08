@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notifier/extentions.dart';
 import 'package:notifier/src/ui/home_page.dart';
 import 'package:notifier/src/ui/settings_page.dart';
 

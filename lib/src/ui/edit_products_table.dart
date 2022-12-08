@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../application/fetch_products.dart';
+import '../application/edit_products.dart';
 
 class ProductDataSource extends DataGridSource {
-  ProductDataSource(this.products) {
+  ProductDataSource(this.products, this.ref) {
     _products = products
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),
@@ -17,6 +18,7 @@ class ProductDataSource extends DataGridSource {
         .toList();
   }
 
+  WidgetRef ref;
   List products;
   List<DataGridRow> _products = [];
 
@@ -40,6 +42,7 @@ class ProductDataSource extends DataGridSource {
                   onPressed: () {
                     products.removeWhere(
                         (element) => element.id == row.getCells()[0].value);
+                    ref.read(editProductsProvider.notifier).writeProducts(products);
                   },
                 )
               : Text(dataGridCell.value.toString(), softWrap: true,),
@@ -72,14 +75,17 @@ class ProductDataSource extends DataGridSource {
       rows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'id', value: newCellValue);
       products[dataRowIndex].id = newCellValue as int;
+      ref.read(editProductsProvider.notifier).writeProducts(products);
     } else if (column.columnName == 'name') {
       rows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'name', value: newCellValue);
       products[dataRowIndex].name = newCellValue.toString();
+      ref.read(editProductsProvider.notifier).writeProducts(products);
     } else if (column.columnName == 'date') {
       rows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'date', value: newCellValue);
       products[dataRowIndex].date = newCellValue.toString();
+      ref.read(editProductsProvider.notifier).writeProducts(products);
     }
   }
 
@@ -126,7 +132,7 @@ class ProductDataSource extends DataGridSource {
 }
 
 FutureBuilder getEditTable(ref) {
-  final edit = ref.watch(fetchProductsProvider);
+  final edit = ref.watch(editProductsProvider);
 
   return FutureBuilder<List<dynamic>>(
       future: edit,
@@ -134,7 +140,7 @@ FutureBuilder getEditTable(ref) {
         if (snapshot.hasData) {
           late ProductDataSource productDataSource;
           final data = snapshot.data as List;
-          productDataSource = ProductDataSource(data);
+          productDataSource = ProductDataSource(data, ref);
 
           return SfDataGridTheme(
                 data: SfDataGridThemeData(

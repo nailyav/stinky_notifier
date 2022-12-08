@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "643161865069",
+    "project_id": "stinky-notifier",
+    "storage_bucket": "stinky-notifier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643161865069:android:ec88733a5bb0ba954eb864",
+        "android_client_info": {
+          "package_name": "com.example.notifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643161865069-ujhrt1og3rnrdh5fvvnqioq02b7441tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuQDI_zjZftXBZUCkY5F3O3LmuLevSCDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643161865069-ujhrt1og3rnrdh5fvvnqioq02b7441tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
