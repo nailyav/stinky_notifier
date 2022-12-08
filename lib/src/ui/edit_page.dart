@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:notifier/src/application/fetch_products.dart';
 import '../application/edit_products.dart';
@@ -139,14 +140,6 @@ class ProductDataSource extends DataGridSource {
 class EditPage extends ConsumerWidget {
   const EditPage({super.key});
 
-  int getId(List list) {
-    int id = 1;
-    while (list.map((e) => e.id).contains(id)) {
-      id++;
-    }
-    return id;
-  }
-
   // TODO: when returning back to home page without committing changes the changes still affect db for some reason
   // (adding a product in edit page and it is added too, but is not showing in the table. so when returning back to edit page changes does not removed)
   @override
@@ -166,8 +159,8 @@ class EditPage extends ConsumerWidget {
             products.then((value) =>  ref.read(editProductsProvider.notifier).writeProducts(value),)
           }
         ),
-        title: const Center(
-          child: Text('Edit'),
+        title: Center(
+          child: Text(AppLocalizations.of(context)!.edit),
         ),
         actions: <Widget>[
           IconButton(
@@ -220,7 +213,7 @@ class EditPage extends ConsumerWidget {
                               padding: const EdgeInsets.all(16.0),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Name',
+                                AppLocalizations.of(context)!.name,
                                 style: Theme.of(context).textTheme.button,
                                 softWrap: true,
                               ))),
@@ -231,7 +224,7 @@ class EditPage extends ConsumerWidget {
                               padding: const EdgeInsets.all(16.0),
                               alignment: Alignment.centerRight,
                               child: Text(
-                                'Date',
+                                AppLocalizations.of(context)!.date,
                                 style: Theme.of(context).textTheme.button,
                                 softWrap: true,
                               ))),
@@ -243,7 +236,7 @@ class EditPage extends ConsumerWidget {
                               padding: const EdgeInsets.all(16.0),
                               alignment: Alignment.centerRight,
                               child: Text(
-                                'Delete',
+                                AppLocalizations.of(context)!.delete,
                                 style: Theme.of(context).textTheme.button,
                                 softWrap: true,
                               ))),
@@ -256,7 +249,7 @@ class EditPage extends ConsumerWidget {
             }),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Add', style: Theme.of(context).textTheme.button),
+        label: Text(AppLocalizations.of(context)!.addNew, style: Theme.of(context).textTheme.button),
         icon: Icon(
           Icons.add,
           size: 24.0,
@@ -265,12 +258,12 @@ class EditPage extends ConsumerWidget {
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text('Add new product', style: Theme.of(context).textTheme.headline6),
+            title: Text(AppLocalizations.of(context)!.addNewProduct, style: Theme.of(context).textTheme.headline6),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter product name',
+                decoration: InputDecoration(
+                  border: const UnderlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.enterProductName,
                 ),
                 onChanged: (text) {
                   ref.read(productNameProvider.notifier).state = text;
@@ -300,7 +293,7 @@ class EditPage extends ConsumerWidget {
                 onPressed: () => {
                   Navigator.pop(context),
                 },
-                child: Text('Cancel', style: Theme.of(context).textTheme.button),
+                child: Text(AppLocalizations.of(context)!.cancel, style: Theme.of(context).textTheme.button),
               ),
               TextButton(
                 onPressed: () => {
@@ -314,7 +307,7 @@ class EditPage extends ConsumerWidget {
                   )),
                 // ref.read(productNameProvider.notifier).state = '',
                 },
-                child: Text('Add', style: Theme.of(context).textTheme.button),
+                child: Text(AppLocalizations.of(context)!.add, style: Theme.of(context).textTheme.button),
               ),
             ],
           ),

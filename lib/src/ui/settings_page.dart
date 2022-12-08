@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final themeProvider = StateProvider<bool>((ref) => true);
 
@@ -13,7 +14,7 @@ class SettingsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
           title: const Center(
-        child: Text('Jokes with Chuck Norris'),
+        child: Text('Settings'),
       )),
       body: Center(
         child: SafeArea(

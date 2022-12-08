@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:notifier/src/ui/settings_page.dart';
 import 'package:notifier/src/application/fetch_products.dart';
@@ -104,7 +105,7 @@ class MyHomePage extends ConsumerWidget {
                                 padding: const EdgeInsets.all(16.0),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Name',
+                                  AppLocalizations.of(context)!.name,
                                   style: Theme.of(context).textTheme.button,
                                   softWrap: true,))),
                         GridColumn(
@@ -114,7 +115,7 @@ class MyHomePage extends ConsumerWidget {
                                 padding: const EdgeInsets.all(16.0),
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'Date',
+                                  AppLocalizations.of(context)!.expirationDate,
                                   style: Theme.of(context).textTheme.button,
                                   softWrap: true,
                                 )
@@ -128,7 +129,7 @@ class MyHomePage extends ConsumerWidget {
               }),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Edit', style: Theme.of(context).textTheme.button),
+        label: Text(AppLocalizations.of(context)!.edit, style: Theme.of(context).textTheme.button),
         icon: Icon(
           Icons.edit,
           size: 24.0,

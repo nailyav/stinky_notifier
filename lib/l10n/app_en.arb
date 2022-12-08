@@ -1,0 +1,19 @@
+{
+    "@@locale" : "en",
+
+    "name": "Name",
+    "@name": {
+      "description": "Name of the product"
+    },
+
+    "expirationDate": "Expiration Date",
+    "edit": "Edit",
+    "delete": "Delete",
+    "addNew": "Add",
+    "add": "Add",
+    "cancel": "Cancel",
+    "addNewProduct": "Add new product",
+    "enterProductName": "Enter product name",
+    "enterExpirationDate": "Enter expiration date",
+    "date": "Date"
+}
