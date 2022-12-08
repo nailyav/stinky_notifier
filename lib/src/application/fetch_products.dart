@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
 import 'package:notifier/src/models/product_model.dart';
 
 class FetchProducts extends Notifier<Future<List>> {

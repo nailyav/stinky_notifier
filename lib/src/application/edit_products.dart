@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notifier/src/models/product_model.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:notifier/src/models/product_model.dart';
 
 class EditProducts extends Notifier<Future<List>> {
   List products = [];
