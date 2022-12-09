@@ -1,20 +1,28 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:animator/animator.dart';
+import 'package:path_provider/path_provider.dart';
 
 final themeProvider = StateProvider<bool>((ref) => true);
 
 Future<Image> getImage(http.Client client) async {
-  final response = await client
+  try {
+    final response = await client
       .get(Uri.parse('https://http.cat/102.jpg'));
-
-  if (response.statusCode == 200) {
-    return Image.network('https://http.cat/102.jpg');
-  } else {
-    throw Exception('Failed to load image');
+      if (response.statusCode == 200) {
+        return Image.network('https://http.cat/102.jpg');
+      } else {
+        throw Exception('Failed to load image');
+      }
   }
+  catch (e) {
+    return Image.asset('assets/poop.png');
+  }
+
 }
 
 class SettingsPage extends ConsumerWidget {
