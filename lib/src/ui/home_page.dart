@@ -96,7 +96,7 @@ class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
@@ -105,7 +105,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   void initState() {
     service = LocalNotificationService();
-    service.intialize();
+    service.initialize();
     listenToNotification();
     super.initState();
   }
@@ -122,7 +122,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
             Animator<double>(
               tween: Tween<double>(begin: 0, end: 2 * 3.14),
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
               repeats: 0,
               builder: (_, animationState, __) => Transform(
                 transform: Matrix4.rotationY(animationState.value),
@@ -234,7 +234,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         onPressed: () {
           products.then((value) => {
             ref.read(editProductsProvider.notifier).writeProducts(value),
-            print("products: ${value.length}"),
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const EditPage()),
             )
@@ -245,9 +244,9 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   }
 
   void listenToNotification() =>
-      service.onNotificationClick.stream.listen(onNoticationListener);
+      service.onNotificationClick.stream.listen(onNotificationListener);
 
-  void onNoticationListener(String? payload) {
+  void onNotificationListener(String? payload) {
     if (payload != null && payload.isNotEmpty) {
     }
   }

@@ -27,8 +27,8 @@ class SettingsPage extends ConsumerWidget {
     
     return Scaffold(
       appBar: AppBar(
-          title: const Center(
-        child: Text('Settings'),
+          title: Center(
+        child: Text(AppLocalizations.of(context)!.settings),
       )),
       body: Center(
         child: SafeArea(
@@ -39,7 +39,7 @@ class SettingsPage extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SwitchListTile(
-                    title: Text('Theme', style: Theme.of(context).textTheme.bodyText2,),
+                    title: Text(AppLocalizations.of(context)!.theme, style: Theme.of(context).textTheme.bodyText2,),
                     // for light theme
                     activeColor: const Color(0xfffedbd0),
                     activeTrackColor: const Color(0xfffeeae6),
@@ -50,7 +50,6 @@ class SettingsPage extends ConsumerWidget {
                     onChanged: (toggle){
                       ref.read(themeProvider.notifier).state = toggle;
                     },
-                    // secondary: const Icon(Icons.wb_sunny),
                 ),
               ),
               const SizedBox(
@@ -61,7 +60,7 @@ class SettingsPage extends ConsumerWidget {
                   "rotation": Tween<double>(begin: 0, end: 4 * 3.14),
                 },
                 cycles: 0,
-                duration: Duration(seconds: 2),
+                duration: const Duration(seconds: 2),
                 builder: (context, anim, child) => Transform.rotate(
                   angle: anim.getValue('rotation'),
                   child:  FutureBuilder<Image>(
@@ -77,7 +76,6 @@ class SettingsPage extends ConsumerWidget {
                   ),
                 ),
               ),
-              // Image.network('https://http.cat/200'),
             ],
           ),
         ),

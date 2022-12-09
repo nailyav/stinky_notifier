@@ -116,7 +116,6 @@ class ProductDataSource extends DataGridSource {
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
         ),
-        // TODO open date picker when edited
         keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
         onChanged: (String value) {
           if (value.isNotEmpty) {
@@ -139,17 +138,10 @@ class ProductDataSource extends DataGridSource {
 
 class EditPage extends ConsumerWidget {
   const EditPage({super.key});
-
-  // TODO: when returning back to home page without committing changes the changes still affect db for some reason
-  // (adding a product in edit page and it is added too, but is not showing in the table. so when returning back to edit page changes does not removed)
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final edit = ref.watch(editProductsProvider);
     final products = ref.watch(fetchProductsProvider);
-
-    edit.then((value) => print("edit: ${value.length}"));
-    products.then((value) => print("products: ${value.length}"));
-
     final format = DateFormat("yyyy-MM-dd");
 
     return Scaffold(
@@ -171,6 +163,7 @@ class EditPage extends ConsumerWidget {
               ),
               onPressed: () {
                 edit.then((data) => ref.read(fetchProductsProvider.notifier).confirmEdit(data));
+                Navigator.pop(context);
               }),
         ],
       ),
