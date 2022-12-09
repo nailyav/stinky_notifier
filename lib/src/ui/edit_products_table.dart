@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:http/http.dart' as http;
 
 import '../application/edit_products.dart';
 
@@ -111,7 +110,6 @@ class ProductDataSource extends DataGridSource {
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
         ),
-        // TODO open date picker when edited
         keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
         onChanged: (String value) {
           if (value.isNotEmpty) {

@@ -10,7 +10,7 @@ class LocalNotificationService {
 
   final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
 
-  Future<void> intialize() async {
+  Future<void> initialize() async {
     tz.initializeTimeZones();
     const AndroidInitializationSettings androidInitializationSettings =
     AndroidInitializationSettings('@mipmap/launcher_icon');

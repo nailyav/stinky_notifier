@@ -12,16 +12,11 @@ class EditProducts extends Notifier<Future<List>> {
   Future<String> get localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
-    // final directory = await getApplicationDocumentsDirectory();
-    // final String path = directory.path;
-    // return '$path/products.json';
   }
 
   Future<File> get localFile async {
     final path = await localPath;
     return File('$path/products.json');
-    // File file = File(await getLocalPath());
-    // return file;
   }
 
   Future<List> writeJson(List list) async {
@@ -34,11 +29,6 @@ class EditProducts extends Notifier<Future<List>> {
     products.add(product);
     state = writeJson(products);
   }
-
-  // Future<void> removeProductJson(int id) async {
-  //   products.removeAt(id);
-  //   state = writeJson(products);
-  // }
 
   Future<void> writeProducts(List list) async {
     products = list;
