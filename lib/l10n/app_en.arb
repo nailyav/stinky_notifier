@@ -15,5 +15,11 @@
     "addNewProduct": "Add new product",
     "enterProductName": "Enter product name",
     "enterExpirationDate": "Enter expiration date",
-    "date": "Date"
+    "enterNotificationTime": "Send notification in ... hours",
+    "date": "Date",
+    "settings" : "Settings",
+    "theme" : "Theme",
+    "notify" : "Notify",
+    "notificationTitle": "Oh... the product will spoil soon",
+    "notificationBody": "It is time to checkout product "
 }

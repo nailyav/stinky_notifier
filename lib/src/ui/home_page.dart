@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:notifier/src/application/providers.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,19 +8,24 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notifier/src/ui/settings_page.dart';
 import 'package:notifier/src/application/fetch_products.dart';
 import '../application/edit_products.dart';
+import '../services/local_notification_service.dart';
 import 'edit_page.dart';
 
 class ProductDataSource extends DataGridSource {
-  ProductDataSource(this.products) {
+  ProductDataSource(this.products, this.ref, this.service, this.context) {
     _products = products
         .map<DataGridRow>((e) => DataGridRow(cells: [
       DataGridCell<int>(columnName: 'id', value: e.id),
       DataGridCell<String>(columnName: 'name', value: e.name),
       DataGridCell<String>(columnName: 'date', value: e.date),
+      const DataGridCell<Icon>(
+          columnName: 'notification', value: Icon(Icons.notifications_active_rounded)),
     ]))
         .toList();
   }
-
+  BuildContext context;
+  LocalNotificationService service;
+  WidgetRef ref;
   List products;
   List<DataGridRow> _products = [];
 
@@ -35,18 +41,76 @@ class ProductDataSource extends DataGridSource {
               ? Alignment.centerLeft
               : Alignment.centerRight,
           padding: const EdgeInsets.all(16.0),
-          child: Text(dataGridCell.value.toString(), softWrap: true,),
+          child: (dataGridCell.columnName == 'notification')
+              ? IconButton(
+            icon: dataGridCell.value,
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text(AppLocalizations.of(context)!.addNewProduct, style: Theme.of(context).textTheme.headline6),
+                  content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: AppLocalizations.of(context)!.enterNotificationTime,
+                      ),
+                      onChanged: (seconds) {
+                        ref.read(notificationTimeProvider.notifier).state = int.parse(seconds);
+                      },
+                    ),
+                  ]),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => {
+                        Navigator.pop(context),
+                      },
+                      child: Text(AppLocalizations.of(context)!.cancel, style: Theme.of(context).textTheme.button),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                          await service.showScheduledNotification(
+                            id: 0,
+                            title: AppLocalizations.of(context)!.notificationTitle,
+                            body:  AppLocalizations.of(context)!.notificationBody + row.getCells()[1].value,
+                            seconds: ref.read(notificationTimeProvider.notifier).state // * 3600 // but for sake of testing now it's seconds,
+                          );
+                        },
+                      // },
+                      child: Text(AppLocalizations.of(context)!.add, style: Theme.of(context).textTheme.button),
+                    ),
+                  ],
+                ),
+              ))
+              : Text(dataGridCell.value.toString(), softWrap: true,),
         );
       }).toList(),
     );
   }
 }
 
-class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key});
+
+class MyHomePage extends ConsumerStatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  late final LocalNotificationService service;
+
+  @override
+  void initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final products = ref.watch(fetchProductsProvider);
 
     return Scaffold(
@@ -74,7 +138,7 @@ class MyHomePage extends ConsumerWidget {
                 if (snapshot.hasData) {
                   late ProductDataSource productDataSource;
                   final data = snapshot.data as List;
-                  productDataSource = ProductDataSource(data);
+                  productDataSource = ProductDataSource(data, ref, service, context);
 
                   return SfDataGridTheme(
                     data: SfDataGridThemeData(
@@ -101,6 +165,7 @@ class MyHomePage extends ConsumerWidget {
                                   softWrap: true,))),
                         GridColumn(
                             columnName: 'name',
+                            width: 140,
                             label: Container(
                                 padding: const EdgeInsets.all(16.0),
                                 alignment: Alignment.centerLeft,
@@ -110,12 +175,24 @@ class MyHomePage extends ConsumerWidget {
                                   softWrap: true,))),
                         GridColumn(
                             columnName: 'date',
-                            width: 200,
+                            width: 140,
                             label: Container(
                                 padding: const EdgeInsets.all(16.0),
                                 alignment: Alignment.centerRight,
                                 child: Text(
                                   AppLocalizations.of(context)!.expirationDate,
+                                  style: Theme.of(context).textTheme.button,
+                                  softWrap: true,
+                                )
+                            )
+                        ),
+                        GridColumn(
+                            columnName: 'notification',
+                            width: 80,
+                            label: Container(
+                                padding: const EdgeInsets.all(16.0),
+                                alignment: Alignment.centerRight,
+                                child: Text(AppLocalizations.of(context)!.notify,
                                   style: Theme.of(context).textTheme.button,
                                   softWrap: true,
                                 )
@@ -146,5 +223,13 @@ class MyHomePage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+    }
   }
 }

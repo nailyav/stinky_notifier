@@ -10,7 +10,6 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final light = ref.watch(themeProvider);
-
     return Scaffold(
       appBar: AppBar(
           title: const Center(
