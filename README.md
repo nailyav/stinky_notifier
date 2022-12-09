@@ -1,31 +1,35 @@
-# notifier
+# Stinky Notifier
+[![Test, Build and Release apk](https://github.com/nailyav/stinky_notifier/actions/workflows/CI.yaml/badge.svg)](https://github.com/nailyav/stinky_notifier/actions/workflows/CI.yaml)
+> Stinky Notifier is flutter mobile app for notifying people about spoiled products
 
-App to notify user about expiration date
+## Features
+ - Adding/Editing products
+ - Tincture with expiration notice
 
-## Description
+<img src="https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221209-203747_One%20UI%20Home.jpg" width="200px" height="400px"> <img src="https://github.com/nailyav/stinky_notifier/blob/main/screenshots/gif1.gif" width="200px" height="400px"> <img src="https://github.com/nailyav/stinky_notifier/blob/main/screenshots/gif2.gif" width="200px" height="400px"> <img src="https://github.com/nailyav/stinky_notifier/blob/main/screenshots/gif3.gif" width="200px" height="400px">
 
-Initial look of the home page:
 
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232646.jpg)
+## Tech
 
-Clicking on Edit button opens an Editing page where new product can be added (press the add button):
+- http is used
+- All MaterialApp, Scaffold, SafeArea, Column (or Row), Padding are present
+- Piverpod is used
+- json_serializable for product model
+- animator for animations
+- flutter_local_notification, rxdart, timezone for notifications
+- sqflite for data persistency
+- flutter_localizations
+- test_api for test
+- integration_test
+- flutter_test
 
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232656.jpg)
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232705.jpg)
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232722.jpg)
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232821.jpg)
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232841.jpg)
+## Installation
 
-Click the submit button on the top right to save edits:
+Just download and install [this apk](https://github.com/nailyav/stinky_notifier/tree/main/apk) and be happy (´｡• ᵕ •｡`) ♡
 
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232850.jpg)
+## Development
 
-By clicking on settings icon on the top right open the _Jokes with Chuck Norris_ page,
-where jokes retrieved from [the API](https://api.chucknorris.io/) are shown. Another usage of [API](http://worldtimeapi.org/) 
-is showing the current Moscow time in the App Bar in the Home Page:
+Want to contribute? Great! You can write to an [issues](https://github.com/nailyav/stinky_notifier/issues) or create a [pull request](https://github.com/nailyav/stinky_notifier/pulls)
+My deep gratitude to tutorial that are in code as comments
 
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232730.jpg)
-![image](https://github.com/nailyav/stinky_notifier/blob/main/screenshots/Screenshot_20221104-232857.jpg)
-
-## The application
-[Link to the application](https://github.com/nailyav/stinky_notifier/blob/main/apk/app-release.apk)
+### Have a nice day!!!
