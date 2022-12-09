@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:animator/animator.dart';
-import 'package:path_provider/path_provider.dart';
 
 final themeProvider = StateProvider<bool>((ref) => true);
 
@@ -20,7 +18,7 @@ Future<Image> getImage(http.Client client) async {
       }
   }
   catch (e) {
-    return Image.asset('assets/poop.png');
+    return Image.asset('assets/404.jpeg');
   }
 
 }
