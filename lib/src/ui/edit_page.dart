@@ -146,8 +146,10 @@ class EditPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final edit = ref.watch(editProductsProvider);
     final products = ref.watch(fetchProductsProvider);
+
     edit.then((value) => print("edit: ${value.length}"));
     products.then((value) => print("products: ${value.length}"));
+
     final format = DateFormat("yyyy-MM-dd");
 
     return Scaffold(
@@ -245,7 +247,7 @@ class EditPage extends ConsumerWidget {
 
                 );
               }
-              return Image.network('https://http.cat/102');
+              return const CircularProgressIndicator();
             }),
       ),
       floatingActionButton: FloatingActionButton.extended(

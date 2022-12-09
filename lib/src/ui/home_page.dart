@@ -125,7 +125,7 @@ class MyHomePage extends ConsumerWidget {
                     ),
                   );
                 }
-                return Image.network('https://http.cat/102');
+                return const CircularProgressIndicator();
               }),
       ),
       floatingActionButton: FloatingActionButton.extended(
