@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
+
+Future<Image> getImage(http.Client client) async {
+  final response = await client
+      .get(Uri.parse('https://http.cat/102.jpg'));
+
+  if (response.statusCode == 200) {
+    return Image.network('https://http.cat/102.jpg');
+  } else {
+    throw Exception('Failed to load image');
+  }
+}
 
 final themeProvider = StateProvider<bool>((ref) => true);
 
@@ -10,7 +22,8 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final light = ref.watch(themeProvider);
-
+    final image = getImage(http.Client());
+    
     return Scaffold(
       appBar: AppBar(
           title: const Center(
@@ -39,7 +52,18 @@ class SettingsPage extends ConsumerWidget {
                     // secondary: const Icon(Icons.wb_sunny),
                 ),
               ),
-              Image.network('https://http.cat/200'),
+              FutureBuilder<Image>(
+                future: image,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data!;
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+              // Image.network('https://http.cat/200'),
             ],
           ),
         ),
