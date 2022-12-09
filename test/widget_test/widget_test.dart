@@ -29,7 +29,6 @@ Future<void> prepareDatePicker(
       TextDirection textDirection = TextDirection.ltr,
       bool useMaterial3 = false,
     }) async {
-  late BuildContext buttonContext;
   await tester.pumpWidget(MaterialApp(
     theme: ThemeData(useMaterial3: useMaterial3),
     home: Material(
@@ -37,7 +36,6 @@ Future<void> prepareDatePicker(
         builder: (BuildContext context) {
           return ElevatedButton(
             onPressed: () {
-              buttonContext = context;
             },
             child: const Text('Go'),
           );
