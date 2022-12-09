@@ -11,5 +11,12 @@
     "addNewProduct": "Jaña azyq-tülık qosu",
     "enterProductName": "Azyq-tülık atauyn engızıñız",
     "enterExpirationDate": "Jaramdylyq merzımı engızıñız",
-    "date": "Kün"
+    "date": "Kün",
+    "enterNotificationTime": "Habarlama jiberý ... saǵat",
+    "date": "Kün",
+    "settings" : "Baptau",
+    "theme" : "Tüs sūlbasy",
+    "notify" : "Habarlaý",
+    "notificationTitle": "Oh... jaqynda ónim nasharlaıdy",
+    "notificationBody": "Taýarǵa tapsyrys berý ýaqyty keldi "
 }
