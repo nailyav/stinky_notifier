@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'package:animator/animator.dart';
+
+final themeProvider = StateProvider<bool>((ref) => true);
 
 Future<Image> getImage(http.Client client) async {
   final response = await client
@@ -13,8 +16,6 @@ Future<Image> getImage(http.Client client) async {
     throw Exception('Failed to load image');
   }
 }
-
-final themeProvider = StateProvider<bool>((ref) => true);
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -52,16 +53,29 @@ class SettingsPage extends ConsumerWidget {
                     // secondary: const Icon(Icons.wb_sunny),
                 ),
               ),
-              FutureBuilder<Image>(
-                future: image,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return snapshot.data!;
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return const CircularProgressIndicator();
+              const SizedBox(
+                height: 50,
+              ),
+              Animator(
+                tweenMap: {
+                  "rotation": Tween<double>(begin: 0, end: 4 * 3.14),
                 },
+                cycles: 0,
+                duration: Duration(seconds: 2),
+                builder: (context, anim, child) => Transform.rotate(
+                  angle: anim.getValue('rotation'),
+                  child:  FutureBuilder<Image>(
+                    future: image,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data!;
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                ),
               ),
               // Image.network('https://http.cat/200'),
             ],
