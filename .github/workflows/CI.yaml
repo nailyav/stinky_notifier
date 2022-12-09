@@ -23,6 +23,7 @@ jobs:
 
       - name: Format
         run: flutter format lib --set-exit-if-changed
+        continue-on-error: true
 
       - name: Build APK
         run: flutter build apk
