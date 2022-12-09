@@ -9,7 +9,7 @@ import 'package:notifier/src/application/fetch_products.dart';
 import '../application/edit_products.dart';
 import 'edit_page.dart';
 import '../services/local_notification_service.dart';
-
+import 'package:animator/animator.dart';
 
 class ProductDataSource extends DataGridSource {
   ProductDataSource(this.products, this.ref, this.service, this.context) {
@@ -116,6 +116,24 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+
+            Animator<double>(
+              tween: Tween<double>(begin: 0, end: 2 * 3.14),
+              duration: Duration(seconds: 2),
+              repeats: 0,
+              builder: (_, animationState, __) => Transform(
+                transform: Matrix4.rotationY(animationState.value),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/poop.png',
+                  width: 10,
+                ),
+              ),
+            )
+        ),
         title: const Text('Stinky Notifier'),
         actions: <Widget>[
           IconButton(
