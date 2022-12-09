@@ -38,33 +38,30 @@ const MaterialColor darkPinkColor = MaterialColor(
   },
 );
 
-
 ThemeData _darkTheme = ThemeData(
   // scaffoldBackgroundColor: const Color(0xFF303030),
   // brightness: Brightness.dark,
-  colorScheme: ColorScheme.fromSwatch(primarySwatch: darkPinkColor)
-      .copyWith(
-      // primary: const Color(0xff212121),
-      secondary: const Color(0xffbb86fc),   // for buttons
-      onPrimary: const Color(0xfffffbfa),   // for icons
-      onSecondary: const Color(0xff424242), // for table heading
-      error: const Color(0xffc5032b),
-      brightness: Brightness.dark,),
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: darkPinkColor).copyWith(
+    // primary: const Color(0xff212121),
+    secondary: const Color(0xffbb86fc), // for buttons
+    onPrimary: const Color(0xfffffbfa), // for icons
+    onSecondary: const Color(0xff424242), // for table heading
+    error: const Color(0xffc5032b),
+    brightness: Brightness.dark,
+  ),
   textTheme: const TextTheme(
     bodyText2: TextStyle(color: Color(0xfffffbfa)),
     button: TextStyle(color: Color(0xfffffbfa)),
     headline6: TextStyle(color: Color(0xfffffbfa)),
   ),
-
 );
 
 ThemeData _lightTheme = ThemeData(
   scaffoldBackgroundColor: const Color(0xfffffbfa),
-  colorScheme: ColorScheme.fromSwatch(primarySwatch: pinkColor)
-      .copyWith(
+  colorScheme: ColorScheme.fromSwatch(primarySwatch: pinkColor).copyWith(
       // primary: const Color(0xfffedbd0),
-      secondary: const Color(0xfffeeae6),   // for buttons
-      onPrimary: const Color(0xff442c2e),   // for icons
+      secondary: const Color(0xfffeeae6), // for buttons
+      onPrimary: const Color(0xff442c2e), // for icons
       onSecondary: const Color(0xfffeeae6), // for table heading
       error: const Color(0xffc5032b),
       brightness: Brightness.light),
@@ -74,7 +71,6 @@ ThemeData _lightTheme = ThemeData(
     headline6: TextStyle(color: Color(0xff442c2e)),
   ),
 );
-
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});

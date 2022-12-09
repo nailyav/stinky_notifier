@@ -13,10 +13,10 @@ class LocalNotificationService {
   Future<void> initialize() async {
     tz.initializeTimeZones();
     const AndroidInitializationSettings androidInitializationSettings =
-    AndroidInitializationSettings('@mipmap/launcher_icon');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
 
     IOSInitializationSettings iosInitializationSettings =
-    IOSInitializationSettings(
+        IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
@@ -36,14 +36,14 @@ class LocalNotificationService {
 
   Future<NotificationDetails> _notificationDetails() async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('channel_id', 'channel_name',
-        channelDescription: 'description',
-        importance: Importance.max,
-        priority: Priority.max,
-        playSound: true);
+        AndroidNotificationDetails('channel_id', 'channel_name',
+            channelDescription: 'description',
+            importance: Importance.max,
+            priority: Priority.max,
+            playSound: true);
 
     const IOSNotificationDetails iosNotificationDetails =
-    IOSNotificationDetails();
+        IOSNotificationDetails();
 
     return const NotificationDetails(
       android: androidNotificationDetails,
@@ -62,9 +62,9 @@ class LocalNotificationService {
 
   Future<void> showScheduledNotification(
       {required int id,
-        required String title,
-        required String body,
-        required int seconds}) async {
+      required String title,
+      required String body,
+      required int seconds}) async {
     final details = await _notificationDetails();
     await _localNotificationService.zonedSchedule(
       id,
@@ -77,23 +77,22 @@ class LocalNotificationService {
       details,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
   Future<void> showNotificationWithPayload(
       {required int id,
-        required String title,
-        required String body,
-        required String payload}) async {
+      required String title,
+      required String body,
+      required String payload}) async {
     final details = await _notificationDetails();
     await _localNotificationService.show(id, title, body, details,
         payload: payload);
   }
 
   void onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) {
-  }
+      int id, String? title, String? body, String? payload) {}
 
   void onSelectNotification(String? payload) {
     if (payload != null && payload.isNotEmpty) {

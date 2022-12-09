@@ -15,12 +15,12 @@ class ProductDataSource extends DataGridSource {
   ProductDataSource(this.products, this.ref) {
     _products = products
         .map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<int>(columnName: 'id', value: e.id),
-      DataGridCell<String>(columnName: 'name', value: e.name),
-      DataGridCell<String>(columnName: 'date', value: e.date),
-      const DataGridCell<Icon>(
-          columnName: 'delete', value: Icon(Icons.delete)),
-    ]))
+              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<String>(columnName: 'name', value: e.name),
+              DataGridCell<String>(columnName: 'date', value: e.date),
+              const DataGridCell<Icon>(
+                  columnName: 'delete', value: Icon(Icons.delete)),
+            ]))
         .toList();
   }
 
@@ -39,19 +39,24 @@ class ProductDataSource extends DataGridSource {
           alignment: dataGridCell.columnName == 'name'
               ? Alignment.centerLeft
               : dataGridCell.columnName == 'delete'
-              ? Alignment.center
-              : Alignment.centerRight,
+                  ? Alignment.center
+                  : Alignment.centerRight,
           padding: const EdgeInsets.all(16.0),
           child: (dataGridCell.columnName == 'delete')
               ? IconButton(
-            icon: dataGridCell.value,
-            onPressed: () {
-              products.removeWhere(
-                      (element) => element.id == row.getCells()[0].value);
-              ref.read(editProductsProvider.notifier).writeProducts(products);
-            },
-          )
-              : Text(dataGridCell.value.toString(), softWrap: true,),
+                  icon: dataGridCell.value,
+                  onPressed: () {
+                    products.removeWhere(
+                        (element) => element.id == row.getCells()[0].value);
+                    ref
+                        .read(editProductsProvider.notifier)
+                        .writeProducts(products);
+                  },
+                )
+              : Text(
+                  dataGridCell.value.toString(),
+                  softWrap: true,
+                ),
         );
       }).toList(),
     );
@@ -65,10 +70,10 @@ class ProductDataSource extends DataGridSource {
   void onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
       GridColumn column) {
     final dynamic oldValue = dataGridRow
-        .getCells()
-        .firstWhere((DataGridCell dataGridCell) =>
-    dataGridCell.columnName == column.columnName)
-        .value ??
+            .getCells()
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value ??
         '';
 
     final int dataRowIndex = rows.indexOf(dataGridRow);
@@ -99,10 +104,12 @@ class ProductDataSource extends DataGridSource {
   Widget? buildEditWidget(DataGridRow dataGridRow,
       RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
     final String displayText = dataGridRow
-        .getCells()
-        .firstWhere((DataGridCell dataGridCell) =>
-    dataGridCell.columnName == column.columnName)
-        .value?.toString() ?? '';
+            .getCells()
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value
+            ?.toString() ??
+        '';
 
     newCellValue = null;
 
@@ -147,12 +154,15 @@ class EditPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => {
-            Navigator.of(context).pop(),
-            products.then((value) =>  ref.read(editProductsProvider.notifier).writeProducts(value),)
-          }
-        ),
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => {
+                  Navigator.of(context).pop(),
+                  products.then(
+                    (value) => ref
+                        .read(editProductsProvider.notifier)
+                        .writeProducts(value),
+                  )
+                }),
         title: Center(
           child: Text(AppLocalizations.of(context)!.edit),
         ),
@@ -162,7 +172,8 @@ class EditPage extends ConsumerWidget {
                 Icons.check,
               ),
               onPressed: () {
-                edit.then((data) => ref.read(fetchProductsProvider.notifier).confirmEdit(data));
+                edit.then((data) =>
+                    ref.read(fetchProductsProvider.notifier).confirmEdit(data));
                 Navigator.pop(context);
               }),
         ],
@@ -237,23 +248,21 @@ class EditPage extends ConsumerWidget {
                               ))),
                     ],
                   ),
-
                 );
               }
               return const CircularProgressIndicator();
             }),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(AppLocalizations.of(context)!.addNew, style: Theme.of(context).textTheme.button),
-        icon: Icon(
-          Icons.add,
-          size: 24.0,
-          color: Theme.of(context).colorScheme.onPrimary
-        ),
+        label: Text(AppLocalizations.of(context)!.addNew,
+            style: Theme.of(context).textTheme.button),
+        icon: Icon(Icons.add,
+            size: 24.0, color: Theme.of(context).colorScheme.onPrimary),
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text(AppLocalizations.of(context)!.addNewProduct, style: Theme.of(context).textTheme.headline6),
+            title: Text(AppLocalizations.of(context)!.addNewProduct,
+                style: Theme.of(context).textTheme.headline6),
             content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(
@@ -276,10 +285,12 @@ class EditPage extends ConsumerWidget {
                 validator: (date) => date == null ? 'Invalid date' : null,
                 initialValue: DateTime.now(),
                 onChanged: (date) {
-                  ref.read(dateProvider.notifier).state = DateFormat('dd/MM/yyyy').format(date!);
+                  ref.read(dateProvider.notifier).state =
+                      DateFormat('dd/MM/yyyy').format(date!);
                 },
                 onSaved: (date) {
-                  ref.read(dateProvider.notifier).state = DateFormat('dd/MM/yyyy').format(date!);
+                  ref.read(dateProvider.notifier).state =
+                      DateFormat('dd/MM/yyyy').format(date!);
                 },
               ),
             ]),
@@ -288,21 +299,23 @@ class EditPage extends ConsumerWidget {
                 onPressed: () => {
                   Navigator.pop(context),
                 },
-                child: Text(AppLocalizations.of(context)!.cancel, style: Theme.of(context).textTheme.button),
+                child: Text(AppLocalizations.of(context)!.cancel,
+                    style: Theme.of(context).textTheme.button),
               ),
               TextButton(
                 onPressed: () => {
                   Navigator.pop(context),
                   ref.read(idProvider.notifier).state += 1,
-                  edit.then((data) => ref.read(editProductsProvider.notifier).addProductJson(
-                      Product(
+                  edit.then((data) => ref
+                      .read(editProductsProvider.notifier)
+                      .addProductJson(Product(
                           ref.watch(idProvider),
                           ref.watch(productNameProvider.notifier).state,
-                          ref.watch(dateProvider.notifier).state)
-                  )),
-                // ref.read(productNameProvider.notifier).state = '',
+                          ref.watch(dateProvider.notifier).state))),
+                  // ref.read(productNameProvider.notifier).state = '',
                 },
-                child: Text(AppLocalizations.of(context)!.add, style: Theme.of(context).textTheme.button),
+                child: Text(AppLocalizations.of(context)!.add,
+                    style: Theme.of(context).textTheme.button),
               ),
             ],
           ),

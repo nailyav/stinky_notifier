@@ -7,12 +7,12 @@ import 'package:animator/animator.dart';
 final themeProvider = StateProvider<bool>((ref) => true);
 
 Future<Image> getImage(http.Client client) async {
-  final response = await client
-      .get(Uri.parse('https://http.cat/102.jpg'));
+  final response = await client.get(Uri.parse('https://http.cat/102.jpg'));
 
   if (response.statusCode == 200) {
     return Image.network('https://http.cat/102.jpg');
   } else {
+    return Image.asset('404.jpeg');
     throw Exception('Failed to load image');
   }
 }
@@ -24,7 +24,7 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final light = ref.watch(themeProvider);
     final image = getImage(http.Client());
-    
+
     return Scaffold(
       appBar: AppBar(
           title: Center(
@@ -39,17 +39,20 @@ class SettingsPage extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SwitchListTile(
-                    title: Text(AppLocalizations.of(context)!.theme, style: Theme.of(context).textTheme.bodyText2,),
-                    // for light theme
-                    activeColor: const Color(0xfffedbd0),
-                    activeTrackColor: const Color(0xfffeeae6),
-                    // for dark theme
-                    inactiveThumbColor: Colors.grey.shade600,
-                    inactiveTrackColor: Colors.grey.shade400,
-                    value: light,
-                    onChanged: (toggle){
-                      ref.read(themeProvider.notifier).state = toggle;
-                    },
+                  title: Text(
+                    AppLocalizations.of(context)!.theme,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  // for light theme
+                  activeColor: const Color(0xfffedbd0),
+                  activeTrackColor: const Color(0xfffeeae6),
+                  // for dark theme
+                  inactiveThumbColor: Colors.grey.shade600,
+                  inactiveTrackColor: Colors.grey.shade400,
+                  value: light,
+                  onChanged: (toggle) {
+                    ref.read(themeProvider.notifier).state = toggle;
+                  },
                 ),
               ),
               const SizedBox(
@@ -63,7 +66,7 @@ class SettingsPage extends ConsumerWidget {
                 duration: const Duration(seconds: 2),
                 builder: (context, anim, child) => Transform.rotate(
                   angle: anim.getValue('rotation'),
-                  child:  FutureBuilder<Image>(
+                  child: FutureBuilder<Image>(
                     future: image,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {

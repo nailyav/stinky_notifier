@@ -7,8 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:notifier/src/models/product_model.dart';
 
 class FetchProducts extends Notifier<Future<List>> {
-
-  Future<Database> get database async{
+  Future<Database> get database async {
     return openDatabase(
       join(await getDatabasesPath(), 'products.db'),
       onCreate: (db, version) {
@@ -71,12 +70,12 @@ class FetchProducts extends Notifier<Future<List>> {
 
   Future<void> confirmEdit(List list) async {
     final products = await getProducts();
-    for (Product product in products){
-      if (!list.contains(product)){
+    for (Product product in products) {
+      if (!list.contains(product)) {
         deleteProduct(product.id);
       }
     }
-    for (Product product in list){
+    for (Product product in list) {
       insertProduct(product);
     }
     state = getProducts();
